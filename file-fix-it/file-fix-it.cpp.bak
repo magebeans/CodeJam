@@ -1,0 +1,138 @@
+#include <iostream>
+#include <count>
+#include <string>
+#include <vector>
+
+struct Folder
+{
+	string name;
+	vector<Folder*> subfolders;
+};
+
+class Filesystem
+{
+private:
+	Folder *root;
+public:
+	Filesystem() {root->name = "root";}
+	bool exists(const string& path); //Checks if a given folder exists in the filesystem
+	void add(const string& path); //Adds a folder to the filesystem
+	void display(); //Show fs, pathwise
+};
+
+vector<string> split(const string& path); //Splits a path string into a vector of folder names
+int count_folders(const string& path); //Counts the number of folders in a given path string, excluding root
+string sub_path(const string& path, int k); //Returns the path of the first k+1 folders in the path, excluding root
+int main()
+{
+	int i,t,n,m,j,count;
+	Filesystem fs;
+	cin >> t;
+	for(i = 0; i < t;i++)
+	{
+		cin >> n >> m;
+		while(j = 0; j < n; j++)
+		{
+			string path;
+			cin >> path;
+			fs.add(path);
+		}
+
+		while(j = 0; j < m; j++)
+		{
+			count = 0;
+			string path;
+			cin >> path;
+			for(k = 0; k < count_folders(path); k++)
+			{
+				if(!fs.exists(sub_path(path,k)))
+					count++;
+			}
+		}
+	}
+}
+
+bool Filesystem::exists(const string& path) //Checks if a given folder exists in the filesystem
+{
+	vector<string> folder_names = split(path);
+	bool ret = 1;
+	Folder* parent = root;
+	for(int i = 0; i < folders.size(); i++)
+		//find_in returns a pointer to the subfolder whose name is the same as folder_names[i]
+		//returns NULL if no such folder is found, implying that the folder does not exist 
+		//Initially, root is checked to see if folder_names[0] exists
+		//If folder_name[0] exists, the new parent is this folder, and the new parent is checked
+		//to see if a subfolder of name folder_name[1] exists, and so on
+		if(parent = find_in(parent->subfolders, folder_names[i]) == NULL)
+			ret = 0;
+
+	return ret;
+}
+
+void Filesystem::add(const string& path) //Adds a folder to the filesystem
+{
+	vector<string> folder_names = split(path);
+	Folder* parent = root;
+	for(int i = 0; i < folders.size(); i++)
+		//find_in returns a pointer to the subfolder whose name is the same as folder_names[i]
+		//returns NULL if no such folder is found, implying that the folder does not exist 
+		//Initially, root is checked to see if folder_names[0] exists
+		//If folder_name[0] exists, the new parent is this folder, and the new parent is checked
+		//to see if a subfolder of name folder_name[1] exists, and so on
+		if(find_in(parent->subfolders, folder_names[i]) == NULL)
+		{
+			Folder *temp = new Folder;
+			temp->name = folder_names[i];
+			parent->subfolders.push_back(temp);
+		}
+}
+
+void Filesystem::display()
+{
+	vector<Folder*>::const_iterator i = root->subfolders.begin();
+	vector<string> folders;
+	while(i != root->subfolders.end(); i++)
+		folders = get_path(*i);
+	
+	for(int i = 0; i < folders.size(); i++)
+		cout<<"/"<<folders[i]<<endl;
+}
+
+vector<string> Filesystem::get_path(Folder *p)
+{
+	vector<Folder*>::const_iterator i = p->subfolders.begin();
+	vector<string> ret;
+	vector<string> folders;
+	while(i != p->subfolders.end(); p++)
+	{
+		folders = 
+	}
+}
+
+vector<string> split(const string& path) //Splits a path string into a vector of folder names
+{
+	vector<string> ret;
+	string::const_iterator i,j;
+	i = path.begin();
+	for(i++ != path.end()) //Increment i to move past previous '/' so that it now points to first letter of folder name
+	{
+		j = path.find(i,'/'); //j points to the next '/' or to the end of path string
+		ret.push_back(string(i,j))); //Add the next folder name, the substring between i and j
+		i = j; //Move i forward to j, so i now points to the '/'
+	}
+	return ret;
+}
+
+int count_folders(const string& path); //Counts the number of folders in a given path string, excluding root
+{
+	return count(path.begin(),path.end(),'/');
+}
+
+string sub_path(const string& path, int k) //Returns the path of the first k+1 folders in the path, excluding root
+{
+	vector<string> folders = split(path);
+	string ret;
+	int i;
+	for(i=0;i<k+1;i++)
+		ret+=folders[i];
+}
